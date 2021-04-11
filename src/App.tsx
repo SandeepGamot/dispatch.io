@@ -34,12 +34,13 @@ function App() {
       </div>
       <Dropzone
         onDrop={(acceptedFiles) => {
-          let sum = getSum(acceptedFiles);
+          let files = [...fileList, ...acceptedFiles];
+          let sum = getSum(files);
 
           if (sum > MAX_SIZE) {
             message.error("Files exceed size limit");
           } else {
-            setFileList(acceptedFiles);
+            setFileList(files);
           }
         }}
       >

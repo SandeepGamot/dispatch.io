@@ -1,4 +1,4 @@
-import { Button, List, message } from "antd";
+import { Button, message } from "antd";
 import Dragger from "antd/lib/upload/Dragger";
 import * as React from "react";
 import firebase from "./firebase";
@@ -9,6 +9,7 @@ import Dropzone from "react-dropzone";
 const ONE_MB = 1000000;
 
 const MAX_SIZE = 20 * ONE_MB;
+const MAX_FILE_COUNT = 5;
 
 function App() {
   const ref = firebase.database();
@@ -24,17 +25,35 @@ function App() {
     return list.map((f) => f.size).reduce((total, amount) => total + amount);
   };
 
+  //TODO:
+  // Upload multiple files
+  // Download multiple files
+
   return (
     <div className="h-auto w-screen flex flex-col justify-center items-center overflow-y-auto font-black">
       <div className="flex items-end space-x-1.5 my-16">
         <span className="text-5xl">
           {((MAX_SIZE - getSum(fileList)) / ONE_MB).toPrecision(3)}
+          <span className="text-xs">MB</span>
         </span>
-        <span>MB left</span>
+        <span className="text-4xl px-10">/</span>
+        <span className="text-5xl">
+          {MAX_FILE_COUNT - fileList.length}{" "}
+          <span className="text-xs">files</span>
+        </span>
+        <span>left</span>
       </div>
       <Dropzone
+        disabled={fileList.length === MAX_FILE_COUNT}
         onDrop={(acceptedFiles) => {
           let files = [...fileList, ...acceptedFiles];
+          if (files.length > MAX_FILE_COUNT) {
+            files = files.slice(0, MAX_FILE_COUNT);
+            message.warn(
+              `Max ${MAX_FILE_COUNT} files can be added, we've kept the first ${MAX_FILE_COUNT}, rest are dropped`,
+              5
+            );
+          }
           let sum = getSum(files);
 
           if (sum > MAX_SIZE) {
@@ -49,11 +68,30 @@ function App() {
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <Dragger
-                style={{ background: "#E7F6FE" }}
+                style={{
+                  background:
+                    fileList.length === MAX_FILE_COUNT ? undefined : "#E7F6FE",
+                }}
                 openFileDialogOnClick={false}
                 height={200}
               >
-                <p className="text-blue-900">
+                <span
+                  style={{ fontSize: "56px" }}
+                  className={`material-icons ${
+                    fileList.length === MAX_FILE_COUNT
+                      ? "text-gray-300"
+                      : "text-blue-500"
+                  }`}
+                >
+                  note_add
+                </span>
+                <p
+                  className={`${
+                    fileList.length === MAX_FILE_COUNT
+                      ? "text-gray-300"
+                      : "text-blue-900"
+                  }`}
+                >
                   Drag 'n' drop some files here, or click to select files
                 </p>
               </Dragger>
@@ -91,7 +129,7 @@ function App() {
           <div>
             {fileList.map((f, i) => {
               return (
-                <div className="border border-gray-500 flex justify-between px-1 py-2 select-none my-1 font-light">
+                <div className="border border-gray-500 flex font-light justify-between my-1 pt-2 px-1 select-none">
                   <span className="flex-1 truncate">{f.name}</span>
                   <span
                     className="cursor-pointer text-blue-500 hover:text-blue-700"
@@ -99,7 +137,12 @@ function App() {
                       setFileList(fileList.filter((f, index) => index !== i));
                     }}
                   >
-                    remove
+                    <span
+                      style={{ fontSize: "24px" }}
+                      className="material-icons text-red-600"
+                    >
+                      delete
+                    </span>
                   </span>
                 </div>
               );

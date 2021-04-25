@@ -32,14 +32,14 @@ function App() {
   return (
     <div className="h-auto w-screen flex flex-col justify-center items-center overflow-y-auto font-black">
       <div className="flex items-end space-x-1.5 my-16">
-        <span className="text-5xl">
+        <span className="sm:text-5xl">
           {((MAX_SIZE - getSum(fileList)) / ONE_MB).toPrecision(3)}
-          <span className="text-xs">MB</span>
+          <span className="sm:text-xs">MB</span>
         </span>
-        <span className="text-4xl px-10">/</span>
-        <span className="text-5xl">
+        <span className="sm:text-4xl sm:px-10">/</span>
+        <span className="sm:text-5xl">
           {MAX_FILE_COUNT - fileList.length}{" "}
-          <span className="text-xs">files</span>
+          <span className="sm:text-xs">files</span>
         </span>
         <span>left</span>
       </div>

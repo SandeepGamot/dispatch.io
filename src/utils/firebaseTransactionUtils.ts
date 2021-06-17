@@ -1,12 +1,15 @@
 import firebase from "../firebase";
 import { nanoid } from "nanoid";
 
+const getRef = (id: string) => {
+  return firebase.storage().ref(`${id}/files`);
+};
 export const upload = (
   fileList: Array<File>,
   onComplete?: (value?: any) => void,
   onError?: () => void
 ) => {
-  const ref = firebase.storage().ref(`${nanoid()}/files`);
+  const ref = getRef(nanoid());
 
   Promise.all(fileList.map((file) => uploadFileToRef(file, ref)))
     .then((value) => {
@@ -32,4 +35,9 @@ export const uploadFileToRef = (
       reject(error);
     }
   });
+};
+
+export const getListOfFiles = async (id: string) => {
+  const ref = getRef(id);
+  return (await ref.listAll()).items;
 };

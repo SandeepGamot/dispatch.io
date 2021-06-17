@@ -1,4 +1,4 @@
-import { Button, Divider, Input, message, Modal, Result } from "antd";
+import { Button, Input, message, Result } from "antd";
 import Dragger from "antd/lib/upload/Dragger";
 import * as React from "react";
 
@@ -20,7 +20,6 @@ function Home() {
   const [url, setUrl] = useState("");
 
   const getSum = (list: typeof fileList) => {
-    console.log(list);
     if (list.length === 0) return 0;
     if (list.length === 1) return list[0].size;
 
@@ -36,9 +35,6 @@ function Home() {
         message.error("Copying to clipboard failed");
       });
   };
-  //TODO:
-  // Upload multiple files
-  // Download multiple files
 
   return (
     <div className="h-auto w-screen flex flex-col justify-center items-center overflow-y-auto font-black">
@@ -115,9 +111,9 @@ function Home() {
                   className="font-black"
                   type="primary"
                   block
+                  loading={isUploading}
                   disabled={fileList.length === 0}
                   onClick={() => {
-                    console.log("upload");
                     setIsUploading(true);
                     upload(
                       fileList,

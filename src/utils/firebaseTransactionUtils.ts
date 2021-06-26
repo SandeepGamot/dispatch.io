@@ -41,3 +41,19 @@ export const getListOfFiles = async (id: string) => {
   const ref = getRef(id);
   return (await ref.listAll()).items;
 };
+
+export const downloadFileFromRef = async (ref: firebase.storage.Reference) => {
+  const url = await ref.getDownloadURL();
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.setAttribute("download", ref.name);
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  setTimeout(() => {
+    ref.delete();
+  }, 10 * 1000);
+};

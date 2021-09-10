@@ -1,4 +1,4 @@
-import { Alert, Button, Spin } from "antd";
+import { Alert, Button, message, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import {
   downloadFileFromRef,
@@ -50,7 +50,19 @@ function DownloadPage() {
                     <Button
                       type="primary"
                       onClick={() => {
-                        downloadFileFromRef(ref);
+                        downloadFileFromRef(ref)
+                          .then((msg: string) => {
+                            message.success(msg);
+                            setTimeout(() => {
+                              ref.delete();
+                            }, 5000);
+                          })
+                          .catch((msg) => {
+                            if (typeof msg === "string") message.error(msg);
+                            message.error(
+                              "The file doesn't exist anymore or some error occurred"
+                            );
+                          });
                       }}
                     >
                       Download
@@ -60,8 +72,8 @@ function DownloadPage() {
               })}
             </div>
             <div className="text-xs font-bold">
-              Please Note: The files will be removed from our servers once you
-              download a file
+              Please Note: The particular file will be removed from our server
+              once you click download a file
             </div>
           </div>
         </div>

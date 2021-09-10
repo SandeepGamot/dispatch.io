@@ -44,21 +44,30 @@ export const getListOfFiles = async (id: string) => {
 
 export const downloadFileFromRef = async (ref: firebase.storage.Reference) => {
   const url = await ref.getDownloadURL();
+  return downloadFile(url, ref.name)
+    .then((successMsg: string) => {
+      return successMsg;
+    })
+    .catch((failureMsg: string) => {
+      return failureMsg;
+    });
+};
 
-  fetch(`https://cors-anywhere.herokuapp.com/${url}`)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const fileUrl = window.URL.createObjectURL(blob);
+const downloadFile = (url: string, fileName: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    try {
       const a = document.createElement("a");
+      a.href = url;
+      a.setAttribute("download", fileName);
+      a.target = "_blank";
       a.style.display = "none";
-      a.href = fileUrl;
-      a.download = ref.name;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      window.URL.revokeObjectURL(fileUrl);
-    })
-    .then(() => {
-      ref.delete();
-    });
+
+      resolve("File Downloaded");
+    } catch (error) {
+      reject("Some error occurred while downloading the file");
+    }
+  });
 };

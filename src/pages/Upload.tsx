@@ -118,7 +118,7 @@ const Upload = () => {
                     upload(
                       fileList,
                       ({ path }) => {
-                        setUrl(`${window.location.hostname}/${path}`);
+                        setUrl(`${window.location.host}/${path}`);
                         setFileList([]);
                         setShowResult(true);
                         setIsUploading(false);
@@ -152,7 +152,7 @@ const Upload = () => {
                         link
                       </span>
                     }
-                    value={`${window.location.hostname}/${url}`}
+                    value={url}
                   />
                   <Button type="primary" onClick={copyUrlToClipboard}>
                     <span className="material-icons">content_copy</span>
@@ -193,7 +193,10 @@ const Upload = () => {
           <div>
             {fileList.map((f, i) => {
               return (
-                <div className="border border-gray-500 flex font-light justify-between my-1 pt-2 px-1 select-none">
+                <div
+                  key={`upload-${f.name}-${f.size}-${f.lastModified}-${i}`}
+                  className="border border-gray-500 flex font-light justify-between my-1 pt-2 px-1 select-none"
+                >
                   <span className="flex-1 truncate">{f.name}</span>
                   <span
                     className="cursor-pointer text-blue-500 hover:text-blue-700"

@@ -7,7 +7,7 @@ const App = () => (
   <div>
     <div className="p-8">
       <span
-        className="font-black text-2xl select-none cursor-pointer hover:text-gray-500"
+        className="font-black text-lg select-none cursor-pointer hover:text-gray-500"
         onClick={() => {
           window.location.pathname = "";
         }}

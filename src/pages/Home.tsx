@@ -20,30 +20,36 @@ const Home = () => {
     },
   ];
 
-  const learnMoreSectionCard = (step: number, title: string, text: string) => {
-    const isEvenStep = step % 2 === 0;
-    return (
-      <div
-        key={`learn-more-section-step-${step}`}
-        className={`${
-          isEvenStep && "flex-row-reverse"
-        } flex  my-2 bg-gray-50 p-8 shadow-sm`}
-      >
-        <span className="md:text-6xl text-4xl">{`${step}`}</span>
-        <div className={isEvenStep ? "mr-16" : "ml-16"}>
-          <div className=" font-bold md:text-2xl text-lg">{title}</div>
-          <div>{text}</div>
-        </div>
+  const learnMoreSectionCard = (step: number, title: string, text: string) => (
+    <div
+      key={`learn-more-section-step-${step}`}
+      className="flex  my-2 bg-gray-50 p-8 shadow-sm w-11/12 md:w-3/4 xl:w-1/2"
+    >
+      <span className="md:text-6xl text-4xl">{`${step}`}</span>
+      <div className="ml-16">
+        <div className=" font-bold md:text-2xl text-lg">{title}</div>
+        <div>{text}</div>
       </div>
-    );
+    </div>
+  );
+
+  const callAttention = () => {
+    learnMoreSectionRef.current?.style.setProperty("background", "#FDFF47");
+    setTimeout(() => {
+      learnMoreSectionRef.current?.style.removeProperty("background");
+    }, 200);
   };
 
   return (
     <div>
       <div className=" flex flex-col items-center mt-32">
-        <div className="font-black text-5xl">Disptach.io</div>
-        <div className="font-mono">Share files as easily as sharing a link</div>
-        <div className="mt-4">
+        <div className="font-black lg:text-5xl md:text-4xl sm:text-3xl text-2xl">
+          Disptach.io
+        </div>
+        <div className="font-mono text-center">
+          Share files as easily as sharing a link
+        </div>
+        <div className="flex flex-col items-center mt-4 sm:flex-row sm:items-end sm:space-x-4 space-y-2">
           <Button
             className=""
             type="primary"
@@ -52,12 +58,13 @@ const Home = () => {
             Share Files
           </Button>
           <Button
-            className="ml-4"
+            className=""
             onClick={() => {
               learnMoreSectionRef.current &&
                 learnMoreSectionRef.current!.scrollIntoView({
                   behavior: "smooth",
                 });
+              callAttention();
             }}
           >
             Learn More
@@ -70,13 +77,9 @@ const Home = () => {
         ref={learnMoreSectionRef}
       >
         <div className="font-bold text-2xl mb-20">How it works?</div>
-        <Timeline mode="alternate">
-          {learMoreSectionText.map((element, index) => (
-            <Timeline.Item>
-              {learnMoreSectionCard(index + 1, element.title, element.text)}
-            </Timeline.Item>
-          ))}
-        </Timeline>
+        {learMoreSectionText.map(({ title, text }, i) =>
+          learnMoreSectionCard(i + 1, title, text)
+        )}
       </div>
     </div>
   );

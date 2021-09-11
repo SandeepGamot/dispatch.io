@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import DownloadPage from "./pages/DownloadPage";
+import Home from "./pages/Home";
+import Upload from "./pages/Upload";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => (
+  <div>
+    <div className="p-8">
+      <span
+        className="font-black text-lg select-none cursor-pointer hover:text-gray-500"
+        onClick={() => {
+          window.location.pathname = "";
+        }}
+      >
+        Dispatch.io
+      </span>
     </div>
-  );
-}
+    {/* <Home /> */}
+    {window.location.pathname.includes("/files") ? (
+      <DownloadPage />
+    ) : window.location.pathname.includes("/upload") ? (
+      <Upload />
+    ) : (
+      <Home />
+    )}
+  </div>
+);
 
 export default App;

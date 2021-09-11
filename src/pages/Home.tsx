@@ -1,6 +1,7 @@
 import { Timeline } from "antd";
 import Button from "antd/lib/button";
 import React, { useRef } from "react";
+import rocketSvg from "./assets/rocket.svg";
 
 const Home = () => {
   const learnMoreSectionRef = useRef<HTMLDivElement | null>(null);
@@ -43,6 +44,7 @@ const Home = () => {
   return (
     <div>
       <div className=" flex flex-col items-center mt-32">
+        <img className="mb-10 w-1/4 md:w-1/6 max-w-min" src={rocketSvg} />
         <div className="font-black lg:text-5xl md:text-4xl sm:text-3xl text-2xl">
           Disptach.io
         </div>

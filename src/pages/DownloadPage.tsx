@@ -29,9 +29,13 @@ function DownloadPage() {
           <Alert
             showIcon
             type="warning"
-            message={<div className="text-yellow-900 text-2xl">Warning</div>}
+            message={
+              <div className="lg:text-2xl text-2xl text-sm text-yellow-900">
+                Warning
+              </div>
+            }
             description={
-              <div className="text-yellow-900">
+              <div className="lg:text-lg text-xs text-yellow-900">
                 Make sure you can trust the person that sent you these files;
                 downloading unknown files from the internet can be dangerous.
                 This site does not scan for malicious files; any damages or
@@ -42,7 +46,7 @@ function DownloadPage() {
             }
           />
           <div className="flex flex-col items-center justify-center">
-            <div className="border-2 border-dashed mb-4 mt-12 p-4 select-none w-2/5">
+            <div className="border-2 border-dashed mb-4 md:w-3/4 mt-12 p-4 select-none w-11/12 xl:w-1/2">
               {fileRefs.map((ref: firebase.default.storage.Reference) => {
                 return (
                   <div key={ref.name} className="flex items-center border px-2">
@@ -71,16 +75,16 @@ function DownloadPage() {
                 );
               })}
             </div>
-            <div className="text-xs font-bold">
-              Please Note: The particular file will be removed from our server
-              once you click download a file
+            <div className="text-xs font-bold text-center">
+              Please Note: Once you click download for a file, it will be
+              removed from our server
             </div>
           </div>
         </div>
       ) : (
         <div className="h-screen flex flex-col mt-32 items-center">
           <div className="font-black text-7xl mb-4  animate-pulse">404</div>
-          <div className="">
+          <div className="text-center">
             The page you're looking for either expired or doesn't exist
           </div>
         </div>
